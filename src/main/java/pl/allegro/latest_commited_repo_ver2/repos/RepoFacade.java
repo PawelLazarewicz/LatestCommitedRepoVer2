@@ -12,12 +12,14 @@ import java.util.*;
 public class RepoFacade {
 
     private URL urlRepos;
+    private ReposNames reposNames = new ReposNames();
+    private List<String> names = new ArrayList<>();
 
     public RepoFacade(URL urlRepos) {
         this.urlRepos = urlRepos;
     }
 
-    public void readReposNamesFromJsonToArrayString() {
+    public List<String> readReposNamesFromJsonToArrayString() {
 
         StringBuilder inline = new StringBuilder();
         try {
@@ -34,8 +36,6 @@ public class RepoFacade {
 
             //Get data for Results array
 
-            ReposNames reposNames = new ReposNames();
-            List<String> names = new ArrayList<>();
             for (Object aJsonArray : jsonArray) {
 
 //Store the JSON objects in an array
@@ -49,8 +49,11 @@ public class RepoFacade {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
+        return reposNames.getRepoNameList();
     }
 
-
+    public List<String> getReposNames(){
+        return reposNames.getRepoNameList();
+    }
 }
 
