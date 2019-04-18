@@ -14,6 +14,7 @@ public class BranchesFacade {
 
     private RepoFacade repoFacade;
 
+    private BranchesSha branchesSha = new BranchesSha();
     private Map<String, List<String>> repoNameWithLatestShasFromEachBranch = new HashMap<>();
 
     public BranchesFacade(RepoFacade repoFacade) {
@@ -51,8 +52,13 @@ public class BranchesFacade {
                 e.printStackTrace();
             }
         }
-        System.out.println(repoNameWithLatestShasFromEachBranch);
+        branchesSha.setRepoNameWithLatestShasFromEachBranch(repoNameWithLatestShasFromEachBranch);
+        System.out.println(branchesSha.getRepoNameWithLatestShasFromEachBranch());
 
-        return repoNameWithLatestShasFromEachBranch;
+        return branchesSha.getRepoNameWithLatestShasFromEachBranch();
+    }
+
+    public Map<String, List<String>> getRepoNameWithLatestShasFromEachBranch(){
+        return branchesSha.getRepoNameWithLatestShasFromEachBranch();
     }
 }
