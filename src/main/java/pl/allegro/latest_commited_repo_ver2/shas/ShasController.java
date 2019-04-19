@@ -6,6 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 public class ShasController {
 
@@ -18,8 +22,8 @@ public class ShasController {
 
     @RequestMapping("/shas")
     public ResponseEntity getShasDate(){
-        shasFacade.readShasDateFromJsonToMap();
+        Map<String, List<ZonedDateTime>> stringListMap = shasFacade.readShasDateFromJsonToMap();
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(stringListMap, HttpStatus.OK);
     }
 }
