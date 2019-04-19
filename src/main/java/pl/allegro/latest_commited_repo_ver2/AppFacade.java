@@ -13,6 +13,7 @@ public class AppFacade {
     private RepoFacade repoFacade;
     private BranchesFacade branchesFacade;
     private ShasFacade shasFacade;
+    private String latestCommittedRepoName;
 
     public AppFacade(RepoFacade repoFacade, BranchesFacade branchesFacade, ShasFacade shasFacade) {
         this.repoFacade = repoFacade;
@@ -29,7 +30,6 @@ public class AppFacade {
     }
 
     public String getLatestCommittedRepoName() {
-        String latestCommittedRepoName = null;
 
         Map<String, ZonedDateTime> repoNameWithLatestShasFromEachBranch =
                 shasFacade.getRepoNameWithLatestShasFromEachBranch();
