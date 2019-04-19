@@ -20,7 +20,7 @@ public class BranchesController {
     }
 
     @RequestMapping("/branches")
-    public ResponseEntity getRepos(){
+    public ResponseEntity getBranchesShas(){
         Map<String, List<String>> stringListMap = branchesFacade.readBranchesShasFromJsonToMap();
 
         return new ResponseEntity(stringListMap, HttpStatus.OK);
