@@ -19,7 +19,7 @@ public class RepoFacade {
         this.urlRepos = urlRepos;
     }
 
-    public List<String> readReposNamesFromJsonToArrayString() {
+    public void readReposNamesFromJsonToArrayString() {
 
         StringBuilder inline = new StringBuilder();
         try {
@@ -45,11 +45,11 @@ public class RepoFacade {
                 names.add(stringRepoName);
             }
             reposNames.setRepoNameList(names);
-            System.out.println(reposNames);
+//            System.out.println(reposNames);
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-        return reposNames.getRepoNameList();
+//        return reposNames.getRepoNameList();
     }
 
     public List<String> getReposNames(){

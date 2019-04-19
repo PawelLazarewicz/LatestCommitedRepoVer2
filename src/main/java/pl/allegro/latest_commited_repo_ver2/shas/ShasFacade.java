@@ -22,7 +22,7 @@ public class ShasFacade {
         this.branchesFacade = branchesFacade;
     }
 
-    public Map<String, ZonedDateTime> readLatestShaDateForRepoFromJsonToMap() {
+    public void readLatestShaDateForRepoFromJsonToMap() {
 
         for (Map.Entry<String, List<String>> repoName :
                 branchesFacade.getRepoNameWithLatestShasFromEachBranch().entrySet()) {
@@ -65,9 +65,9 @@ public class ShasFacade {
             }
         }
         shasDate.setRepoNameWithLatestShasDate(repoNameWithLatestShasDateFromEachBranch);
-        System.out.println(shasDate.getRepoNameWithLatestShasDate());
+//        System.out.println(shasDate.getRepoNameWithLatestShasDate());
 
-        return shasDate.getRepoNameWithLatestShasDate();
+//        return shasDate.getRepoNameWithLatestShasDate();
     }
 
     public Map<String, ZonedDateTime> getRepoNameWithLatestShasFromEachBranch() {

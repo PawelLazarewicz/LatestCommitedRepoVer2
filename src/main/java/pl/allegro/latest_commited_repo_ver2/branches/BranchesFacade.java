@@ -21,7 +21,7 @@ public class BranchesFacade {
         this.repoFacade = repoFacade;
     }
 
-    public Map<String, List<String>> readBranchesShasFromJsonToMap() {
+    public void readBranchesShasFromJsonToMap() {
 
         for (String repoName : repoFacade.getReposNames()) {
             StringBuilder inline = new StringBuilder();
@@ -53,9 +53,9 @@ public class BranchesFacade {
             }
         }
         branchesSha.setRepoNameWithLatestShasFromEachBranch(repoNameWithLatestShasFromEachBranch);
-        System.out.println(branchesSha.getRepoNameWithLatestShasFromEachBranch());
+//        System.out.println(branchesSha.getRepoNameWithLatestShasFromEachBranch());
 
-        return branchesSha.getRepoNameWithLatestShasFromEachBranch();
+//        return branchesSha.getRepoNameWithLatestShasFromEachBranch();
     }
 
     public Map<String, List<String>> getRepoNameWithLatestShasFromEachBranch(){
