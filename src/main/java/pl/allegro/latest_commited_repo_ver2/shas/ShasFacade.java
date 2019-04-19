@@ -61,9 +61,8 @@ public class ShasFacade {
                         .sorted()
                         .collect(Collectors.toList())
                         .get(shasDates.size() - 1);
+                repoNameWithLatestShasDateFromEachBranch.put(repoName.getKey(), latestShasDateForRepo);
             }
-
-            repoNameWithLatestShasDateFromEachBranch.put(repoName.getKey(), latestShasDateForRepo);
         }
         shasDate.setRepoNameWithLatestShasDate(repoNameWithLatestShasDateFromEachBranch);
         System.out.println(shasDate.getRepoNameWithLatestShasDate());
