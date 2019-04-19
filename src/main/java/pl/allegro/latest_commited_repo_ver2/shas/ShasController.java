@@ -22,7 +22,7 @@ public class ShasController {
 
     @RequestMapping("/shas")
     public ResponseEntity getShasDate(){
-        Map<String, ZonedDateTime> stringListMap = shasFacade.readShasDateFromJsonToMap();
+        Map<String, ZonedDateTime> stringListMap = shasFacade.readLatestShaDateForRepoFromJsonToMap();
 
         return new ResponseEntity(stringListMap, HttpStatus.OK);
     }
