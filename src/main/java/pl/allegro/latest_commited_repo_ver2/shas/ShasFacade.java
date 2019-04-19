@@ -29,6 +29,7 @@ public class ShasFacade {
 
             List<ZonedDateTime> shasDates = new ArrayList<>();
             ZonedDateTime shaDate;
+            ZonedDateTime latestShasDateForRepo = null;
             for (String shasName : repoName.getValue()) {
 
                 StringBuilder inline = new StringBuilder();
@@ -54,11 +55,13 @@ public class ShasFacade {
                     e.printStackTrace();
                 }
             }
-            ZonedDateTime latestShasDateForRepo = shasDates
-                    .stream()
-                    .sorted()
-                    .collect(Collectors.toList())
-                    .get(shasDates.size() - 1);
+            if (!shasDates.isEmpty()) {
+                latestShasDateForRepo = shasDates
+                        .stream()
+                        .sorted()
+                        .collect(Collectors.toList())
+                        .get(shasDates.size() - 1);
+            }
 
             repoNameWithLatestShasDateFromEachBranch.put(repoName.getKey(), latestShasDateForRepo);
         }
