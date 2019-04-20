@@ -13,6 +13,7 @@ public class AppFacade {
     private RepoFacade repoFacade;
     private BranchesFacade branchesFacade;
     private ShasFacade shasFacade;
+
     private String latestCommittedRepoName;
 
     public AppFacade(RepoFacade repoFacade, BranchesFacade branchesFacade, ShasFacade shasFacade) {
@@ -21,7 +22,7 @@ public class AppFacade {
         this.shasFacade = shasFacade;
     }
 
-    public String App(){
+    public String App() {
         repoFacade.readReposNamesFromJsonToArrayString();
         branchesFacade.readBranchesShasFromJsonToMap();
         shasFacade.readLatestShaDateForRepoFromJsonToMap();
@@ -29,18 +30,19 @@ public class AppFacade {
         return getLatestCommittedRepoName();
     }
 
-    public String getLatestCommittedRepoName() {
+    private String getLatestCommittedRepoName() {
 
         Map<String, ZonedDateTime> repoNameWithLatestShasFromEachBranch =
                 shasFacade.getRepoNameWithLatestShasFromEachBranch();
 
-        ZonedDateTime latestCommitDate = repoNameWithLatestShasFromEachBranch
-                .values()
-                .stream()
-                .sorted()
-                .collect(Collectors.toList())
-                .get(repoNameWithLatestShasFromEachBranch.values().size() - 1);
+        ZonedDateTime latestCommitDate = getLatestCommitDate(repoNameWithLatestShasFromEachBranch);
 
+        getRepoName(repoNameWithLatestShasFromEachBranch, latestCommitDate);
+
+        return latestCommittedRepoName;
+    }
+
+    private void getRepoName(Map<String, ZonedDateTime> repoNameWithLatestShasFromEachBranch, ZonedDateTime latestCommitDate) {
         for (Map.Entry<String, ZonedDateTime> repoNameLatestCommitDateMap :
                 repoNameWithLatestShasFromEachBranch.entrySet()) {
 
@@ -50,6 +52,15 @@ public class AppFacade {
                 break;
             }
         }
-        return latestCommittedRepoName;
+    }
+
+    private ZonedDateTime getLatestCommitDate(Map<String, ZonedDateTime> repoNameWithLatestShasFromEachBranch) {
+
+        return repoNameWithLatestShasFromEachBranch
+                .values()
+                .stream()
+                .sorted()
+                .collect(Collectors.toList())
+                .get(repoNameWithLatestShasFromEachBranch.values().size() - 1);
     }
 }
