@@ -12,11 +12,12 @@ import java.util.*;
 public class RepoFacade extends Methods {
 
     private URL urlRepos;
-    private ReposNames reposNames = new ReposNames();
-//    private List<String> names = new ArrayList<>();
+    private ReposNames reposNames;
+    private List<String> names = new ArrayList<>();
 
     public RepoFacade(URL urlRepos) {
         this.urlRepos = urlRepos;
+        reposNames = new ReposNames();
     }
 
     public void readReposNamesFromJsonToArrayString() {
@@ -26,8 +27,9 @@ public class RepoFacade extends Methods {
 
             JSONArray jsonArray = stringToJsonArray(inline);
 
-            List<String> namesList = getValueFromKeyForEachJsonArrayObject(jsonArray);
-            reposNames.setRepoNameList(namesList);
+            getValueFromKeyForEachJsonArrayObject(jsonArray);
+
+            reposNames.setRepoNameList(names);
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -36,8 +38,7 @@ public class RepoFacade extends Methods {
 
     //get as string value from key "name" for each jsonArray object
     //and return list of names
-    private List<String> getValueFromKeyForEachJsonArrayObject(JSONArray reposJsonArray) {
-        List<String> names = new ArrayList<>();
+    private void getValueFromKeyForEachJsonArrayObject(JSONArray reposJsonArray) {
 
         for (Object repoJsonArray : reposJsonArray) {
 
@@ -46,7 +47,6 @@ public class RepoFacade extends Methods {
 
             names.add(stringRepoName);
         }
-        return names;
     }
 
     public List<String> getReposNames() {
