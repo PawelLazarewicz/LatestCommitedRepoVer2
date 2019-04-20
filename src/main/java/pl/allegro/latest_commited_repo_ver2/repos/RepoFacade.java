@@ -2,57 +2,54 @@ package pl.allegro.latest_commited_repo_ver2.repos;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import pl.allegro.latest_commited_repo_ver2.Methods;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class RepoFacade {
+public class RepoFacade extends Methods {
 
     private URL urlRepos;
-    private ReposNames reposNames = new ReposNames();
+    private ReposNames reposNames;
     private List<String> names = new ArrayList<>();
 
-    public RepoFacade(URL urlRepos) {
+    public RepoFacade(URL urlRepos, ReposNames reposNames) {
         this.urlRepos = urlRepos;
+        this.reposNames = reposNames;
     }
 
-    public List<String> readReposNamesFromJsonToArrayString() {
+    public void readReposNamesFromJsonToArrayString() {
 
-        StringBuilder inline = new StringBuilder();
         try {
-            URL url = urlRepos;
+            StringBuilder inline = urlToString(urlRepos);
 
-            Scanner sc = new Scanner(url.openStream());
-            while (sc.hasNext()) {
-                inline.append(sc.nextLine());
-            }
-            sc.close();
+            JSONArray jsonArray = stringToJsonArray(inline);
 
-            JSONParser jsonParser = new JSONParser();
-            JSONArray jsonArray = (JSONArray) jsonParser.parse(inline.toString());
+            getValueFromKeyForEachJsonArrayObject(jsonArray);
 
-            //Get data for Results array
-
-            for (Object aJsonArray : jsonArray) {
-
-//Store the JSON objects in an array
-//Get the index of the JSON object and print the values as per the index
-                JSONObject jsonObject1 = (JSONObject) aJsonArray;
-                String stringRepoName = String.valueOf(jsonObject1.get("name"));
-                names.add(stringRepoName);
-            }
             reposNames.setRepoNameList(names);
-            System.out.println(reposNames);
+
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-        return reposNames.getRepoNameList();
     }
 
-    public List<String> getReposNames(){
+    //get as string value from key "name" for each jsonArray object
+    //and return list of reposNames
+    private void getValueFromKeyForEachJsonArrayObject(JSONArray reposJsonArray) {
+
+        for (Object repoJsonArray : reposJsonArray) {
+
+            JSONObject repoObject = (JSONObject) repoJsonArray;
+            String stringRepoName = String.valueOf(repoObject.get("name"));
+
+            names.add(stringRepoName);
+        }
+    }
+
+    public List<String> getReposNames() {
         return reposNames.getRepoNameList();
     }
 }

@@ -8,7 +8,12 @@ import pl.allegro.latest_commited_repo_ver2.repos.RepoFacade;
 public class BranchesConfig {
 
     @Bean
-    public BranchesFacade branchesFacade(RepoFacade repoFacade){
-        return new BranchesFacade(repoFacade);
+    public BranchesSha branchesSha(){
+        return new BranchesSha();
+    }
+
+    @Bean
+    public BranchesFacade branchesFacade(RepoFacade repoFacade, BranchesSha branchesSha){
+        return new BranchesFacade(repoFacade, branchesSha);
     }
 }

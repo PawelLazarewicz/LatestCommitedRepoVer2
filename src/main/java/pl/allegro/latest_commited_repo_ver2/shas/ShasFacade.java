@@ -3,6 +3,7 @@ package pl.allegro.latest_commited_repo_ver2.shas;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import pl.allegro.latest_commited_repo_ver2.Methods;
 import pl.allegro.latest_commited_repo_ver2.branches.BranchesFacade;
 
 import java.io.IOException;
@@ -11,63 +12,66 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ShasFacade {
+public class ShasFacade extends Methods {
 
     private BranchesFacade branchesFacade;
 
-    private ShasDate shasDate = new ShasDate();
+    private ShasDate shasDate;
     private Map<String, ZonedDateTime> repoNameWithLatestShasDateFromEachBranch = new HashMap<>();
 
-    public ShasFacade(BranchesFacade branchesFacade) {
+    public ShasFacade(BranchesFacade branchesFacade, ShasDate shasDate) {
         this.branchesFacade = branchesFacade;
+        this.shasDate = shasDate;
     }
 
-    public Map<String, ZonedDateTime> readLatestShaDateForRepoFromJsonToMap() {
+    public void readLatestShaDateForRepoFromJsonToMap() {
 
         for (Map.Entry<String, List<String>> repoName :
                 branchesFacade.getRepoNameWithLatestShasFromEachBranch().entrySet()) {
 
             List<ZonedDateTime> shasDates = new ArrayList<>();
-            ZonedDateTime shaDate;
-            ZonedDateTime latestShasDateForRepo = null;
             for (String shasName : repoName.getValue()) {
-
-                StringBuilder inline = new StringBuilder();
                 try {
-                    URL url =
-                            new URL("https://api.github.com/repos/Lazar18/" + repoName.getKey() + "/commits/" + shasName);
-                    Scanner sc = new Scanner(url.openStream());
-                    while (sc.hasNext()) {
-                        inline.append(sc.nextLine());
-                    }
-                    sc.close();
+                    URL url = new URL("https://api.github.com/repos/Lazar18/" + repoName.getKey() + "/commits/" + shasName);
+                    StringBuilder inline = urlToString(url);
 
-
-                    JSONParser jsonParser = new JSONParser();
-                    JSONObject jsonObject = (JSONObject) jsonParser.parse(inline.toString());
-                    JSONObject commitObjects = (JSONObject) jsonObject.get("commit");
-                    JSONObject authorObjects = (JSONObject) commitObjects.get("author");
-                    String stringShasDate = (String) authorObjects.get("date");
-                    shaDate = ZonedDateTime.parse(stringShasDate);
-                    shasDates.add(shaDate);
+                    getShasDatesListForRepo(shasDates, inline);
 
                 } catch (IOException | ParseException e) {
                     e.printStackTrace();
                 }
             }
-            if (!shasDates.isEmpty()) {
-                latestShasDateForRepo = shasDates
-                        .stream()
-                        .sorted()
-                        .collect(Collectors.toList())
-                        .get(shasDates.size() - 1);
-                repoNameWithLatestShasDateFromEachBranch.put(repoName.getKey(), latestShasDateForRepo);
-            }
+            getMapRepoWithLatestShasDate(repoName, shasDates);
         }
         shasDate.setRepoNameWithLatestShasDate(repoNameWithLatestShasDateFromEachBranch);
-        System.out.println(shasDate.getRepoNameWithLatestShasDate());
+    }
 
-        return shasDate.getRepoNameWithLatestShasDate();
+    // create Map <repoName, latestShasDate> - excluding repo without any shas
+    private void getMapRepoWithLatestShasDate(Map.Entry<String, List<String>> repoName, List<ZonedDateTime> shasDates) {
+        ZonedDateTime latestShasDateForRepo;
+
+        if (!shasDates.isEmpty()) {
+            latestShasDateForRepo = shasDates
+                    .stream()
+                    .sorted()
+                    .collect(Collectors.toList())
+                    .get(shasDates.size() - 1);
+            repoNameWithLatestShasDateFromEachBranch.put(repoName.getKey(), latestShasDateForRepo);
+        }
+    }
+
+    //get as ZonedDateTime value from key "commit":"author":"date" for each shaJsonObject
+    // and return list of shasDates
+    private void getShasDatesListForRepo(List<ZonedDateTime> shasDates, StringBuilder inline) throws ParseException {
+        ZonedDateTime shasDate;
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject shaObject = (JSONObject) jsonParser.parse(inline.toString());
+        JSONObject commitObjects = (JSONObject) shaObject.get("commit");
+        JSONObject authorObjects = (JSONObject) commitObjects.get("author");
+        String stringShasDate = (String) authorObjects.get("date");
+        shasDate = ZonedDateTime.parse(stringShasDate);
+        shasDates.add(shasDate);
     }
 
     public Map<String, ZonedDateTime> getRepoNameWithLatestShasFromEachBranch() {
