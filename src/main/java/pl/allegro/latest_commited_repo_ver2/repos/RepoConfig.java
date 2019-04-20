@@ -13,7 +13,12 @@ public class RepoConfig {
     private URL urlRepos;
 
     @Bean
-    public RepoFacade repoFacade(){
-        return new RepoFacade(urlRepos);
+    public ReposNames reposNames(){
+        return new ReposNames();
+    }
+
+    @Bean
+    public RepoFacade repoFacade(ReposNames reposNames){
+        return new RepoFacade(urlRepos, reposNames);
     }
 }

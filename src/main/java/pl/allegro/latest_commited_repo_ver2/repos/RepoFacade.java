@@ -15,9 +15,9 @@ public class RepoFacade extends Methods {
     private ReposNames reposNames;
     private List<String> names = new ArrayList<>();
 
-    public RepoFacade(URL urlRepos) {
+    public RepoFacade(URL urlRepos, ReposNames reposNames) {
         this.urlRepos = urlRepos;
-        reposNames = new ReposNames();
+        this.reposNames = reposNames;
     }
 
     public void readReposNamesFromJsonToArrayString() {
@@ -37,7 +37,7 @@ public class RepoFacade extends Methods {
     }
 
     //get as string value from key "name" for each jsonArray object
-    //and return list of names
+    //and return list of reposNames
     private void getValueFromKeyForEachJsonArrayObject(JSONArray reposJsonArray) {
 
         for (Object repoJsonArray : reposJsonArray) {
