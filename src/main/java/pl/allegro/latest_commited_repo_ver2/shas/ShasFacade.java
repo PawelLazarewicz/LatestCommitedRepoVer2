@@ -16,11 +16,12 @@ public class ShasFacade extends Methods {
 
     private BranchesFacade branchesFacade;
 
-    private ShasDate shasDate = new ShasDate();
+    private ShasDate shasDate;
     private Map<String, ZonedDateTime> repoNameWithLatestShasDateFromEachBranch = new HashMap<>();
 
-    public ShasFacade(BranchesFacade branchesFacade) {
+    public ShasFacade(BranchesFacade branchesFacade, ShasDate shasDate) {
         this.branchesFacade = branchesFacade;
+        this.shasDate = shasDate;
     }
 
     public void readLatestShaDateForRepoFromJsonToMap() {

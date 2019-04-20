@@ -8,7 +8,12 @@ import pl.allegro.latest_commited_repo_ver2.branches.BranchesFacade;
 public class ShasConfig {
 
     @Bean
-    public ShasFacade shasFacade(BranchesFacade branchesFacade){
-        return new ShasFacade(branchesFacade);
+    public ShasDate shasDate(){
+        return new ShasDate();
+    }
+
+    @Bean
+    public ShasFacade shasFacade(BranchesFacade branchesFacade, ShasDate shasDate){
+        return new ShasFacade(branchesFacade, shasDate);
     }
 }
