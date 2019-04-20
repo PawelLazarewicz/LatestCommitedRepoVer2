@@ -14,11 +14,12 @@ public class BranchesFacade extends Methods {
 
     private RepoFacade repoFacade;
 
-    private BranchesSha branchesSha = new BranchesSha();
+    private BranchesSha branchesSha;
     private Map<String, List<String>> repoNameWithLatestShasFromEachBranch = new HashMap<>();
 
-    public BranchesFacade(RepoFacade repoFacade) {
+    public BranchesFacade(RepoFacade repoFacade, BranchesSha branchesSha) {
         this.repoFacade = repoFacade;
+        this.branchesSha = branchesSha;
     }
 
     public void readBranchesShasFromJsonToMap() {
