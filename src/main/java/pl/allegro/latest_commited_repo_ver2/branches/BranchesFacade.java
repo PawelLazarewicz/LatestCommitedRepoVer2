@@ -23,10 +23,12 @@ public class BranchesFacade extends Methods {
     }
 
     public void readBranchesShasFromJsonToMap() {
+        String allegro = "allegro";
+        String myGitHubAccount = "Lazar18";
 
         for (String repoName : repoFacade.getReposNames()) {
             try {
-                URL url = new URL("https://api.github.com/repos/Lazar18/" + repoName + "/branches");
+                URL url = new URL("https://api.github.com/repos/" + myGitHubAccount + "/" + repoName + "/branches");
                 StringBuilder inline = urlToString(url);
 
                 JSONArray jsonArray = stringToJsonArray(inline);

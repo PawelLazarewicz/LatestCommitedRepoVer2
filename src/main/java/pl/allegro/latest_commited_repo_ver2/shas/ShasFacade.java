@@ -25,6 +25,8 @@ public class ShasFacade extends Methods {
     }
 
     public void readLatestShaDateForRepoFromJsonToMap() {
+        String allegro = "allegro";
+        String myGitHubAccount = "Lazar18";
 
         for (Map.Entry<String, List<String>> repoName :
                 branchesFacade.getRepoNameWithLatestShasFromEachBranch().entrySet()) {
@@ -32,7 +34,7 @@ public class ShasFacade extends Methods {
             List<ZonedDateTime> shasDates = new ArrayList<>();
             for (String shasName : repoName.getValue()) {
                 try {
-                    URL url = new URL("https://api.github.com/repos/Lazar18/" + repoName.getKey() + "/commits/" + shasName);
+                    URL url = new URL("https://api.github.com/repos/" + myGitHubAccount + "/" + repoName.getKey() + "/commits/" + shasName);
                     StringBuilder inline = urlToString(url);
 
                     getShasDatesListForRepo(shasDates, inline);

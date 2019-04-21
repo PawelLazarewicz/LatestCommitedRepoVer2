@@ -9,6 +9,7 @@ import java.net.URL;
 @Configuration
 public class RepoConfig {
 
+//    @Value("https://api.github.com/orgs/allegro/repos?per_page=100;sort=full_name")
     @Value("https://api.github.com/users/Lazar18/repos?per_page=100;sort=full_name")
     private URL urlRepos;
 
